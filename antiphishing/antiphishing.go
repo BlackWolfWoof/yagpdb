@@ -238,7 +238,7 @@ func queryPhishingLinks(input []string) (string, error) {
 	badDomains := make([]string, len(bitflowAntifishResponse.Matches))
 	if bitflowAntifishResponse.Match {
 		for _, match := range bitflowAntifishResponse.Matches {
-			// only flag domains which have a low trust rating, this varies between 0 and 1, 0 means high trust, 1 means no trust.
+			// only flag domains which have a low trust rating, this varies between 0 and 1, 1 means high trust, 0 means no trust.
 			// we use PhishingCheckTrustRatingThreshold (0.5) as cutoff to make sure false positives are ignored.
 			if match.TrustRating > PhishingCheckTrustRatingThreshold {
 				badDomains = append(badDomains, match.Domain)
