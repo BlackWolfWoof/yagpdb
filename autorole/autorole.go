@@ -1,9 +1,9 @@
 package autorole
 
 import (
+	"github.com/botlabs-gg/yagpdb/common"
+	"github.com/botlabs-gg/yagpdb/common/config"
 	"github.com/jonas747/discordgo/v2"
-	"github.com/jonas747/yagpdb/common"
-	"github.com/jonas747/yagpdb/common/config"
 )
 
 var confDisableNonPremiumRetroActiveAssignment = config.RegisterOption("yagpdb.autorole.non_premium_retroactive_assignment", "Wether to enable retroactive assignemnt on non premium guilds", true)
@@ -37,7 +37,7 @@ func RegisterPlugin() {
 
 type GeneralConfig struct {
 	Role             int64 `json:",string" valid:"role,true"`
-	RequiredDuration int
+	RequiredDuration int   `valid:"0,"`
 
 	RequiredRoles []int64 `valid:"role,true"`
 	IgnoreRoles   []int64 `valid:"role,true"`

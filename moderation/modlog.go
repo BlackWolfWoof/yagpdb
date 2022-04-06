@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/botlabs-gg/yagpdb/common"
 	"github.com/jonas747/discordgo/v2"
-	"github.com/jonas747/yagpdb/common"
 )
 
 type ModlogAction struct {
@@ -67,7 +67,7 @@ func CreateModlogEmbed(config *Config, author *discordgo.User, action ModlogActi
 			URL: discordgo.EndpointUserAvatar(target.ID, target.Avatar),
 		},
 		Color: action.Color,
-		Description: fmt.Sprintf("**%s%s %s**#%s *(ID %d)*\n📄**Reason:** %s",
+		Description: fmt.Sprintf("**%s%s** %s#%s *(ID %d)*\n📄**Reason:** %s",
 			action.Emoji, action.Prefix, target.Username, target.Discriminator, target.ID, reason),
 	}
 

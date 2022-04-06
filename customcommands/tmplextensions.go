@@ -7,17 +7,17 @@ import (
 	"time"
 
 	"emperror.dev/errors"
+	"github.com/botlabs-gg/yagpdb/bot"
+	"github.com/botlabs-gg/yagpdb/commands"
+	"github.com/botlabs-gg/yagpdb/common"
+	"github.com/botlabs-gg/yagpdb/common/scheduledevents2"
+	scheduledmodels "github.com/botlabs-gg/yagpdb/common/scheduledevents2/models"
+	"github.com/botlabs-gg/yagpdb/common/templates"
+	"github.com/botlabs-gg/yagpdb/customcommands/models"
+	"github.com/botlabs-gg/yagpdb/premium"
 	"github.com/jonas747/dcmd/v4"
 	"github.com/jonas747/discordgo/v2"
 	"github.com/jonas747/dstate/v4"
-	"github.com/jonas747/yagpdb/bot"
-	"github.com/jonas747/yagpdb/commands"
-	"github.com/jonas747/yagpdb/common"
-	"github.com/jonas747/yagpdb/common/scheduledevents2"
-	scheduledmodels "github.com/jonas747/yagpdb/common/scheduledevents2/models"
-	"github.com/jonas747/yagpdb/common/templates"
-	"github.com/jonas747/yagpdb/customcommands/models"
-	"github.com/jonas747/yagpdb/premium"
 	"github.com/vmihailenco/msgpack"
 	"github.com/volatiletech/null"
 	"github.com/volatiletech/sqlboiler/boil"
@@ -77,7 +77,7 @@ func tmplCArg(typ string, name string, opts ...interface{}) (*dcmd.ArgDef, error
 	case "userid":
 		def.Type = dcmd.UserID
 	case "channel":
-		def.Type = dcmd.Channel
+		def.Type = dcmd.ChannelOrThread
 	case "member":
 		def.Type = &commands.MemberArg{}
 	case "role":
@@ -190,7 +190,7 @@ func tmplRunCC(ctx *templates.Context) interface{} {
 			return "", errors.New("Unknown channel")
 		}
 
-		cs := ctx.GS.GetChannel(channelID)
+		cs := ctx.GS.GetChannelOrThread(channelID)
 		if cs == nil {
 			return "", errors.New("Channel not in state")
 		}
@@ -270,7 +270,7 @@ func tmplScheduleUniqueCC(ctx *templates.Context) interface{} {
 			return "", errors.New("Unknown channel")
 		}
 
-		cs := ctx.GS.GetChannel(channelID)
+		cs := ctx.GS.GetChannelOrThread(channelID)
 		if cs == nil {
 			return "", errors.New("Channel not in state")
 		}

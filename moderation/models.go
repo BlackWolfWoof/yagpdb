@@ -6,10 +6,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/jonas747/yagpdb/common"
-	"github.com/jonas747/yagpdb/common/configstore"
-	"github.com/jonas747/yagpdb/common/featureflags"
-	"github.com/jonas747/yagpdb/common/pubsub"
+	"github.com/botlabs-gg/yagpdb/common"
+	"github.com/botlabs-gg/yagpdb/common/configstore"
+	"github.com/botlabs-gg/yagpdb/common/featureflags"
+	"github.com/botlabs-gg/yagpdb/common/pubsub"
 	"github.com/lib/pq"
 )
 
@@ -24,11 +24,11 @@ type Config struct {
 	KickMessage          string `valid:"template,5000"`
 
 	// Ban
-	BanEnabled        	bool
-	BanCmdRoles       	pq.Int64Array `gorm:"type:bigint[]" valid:"role,true"`
-	BanReasonOptional 	bool
-	BanMessage        	string `valid:"template,5000"`
-	DefaultBanDeleteDays    sql.NullInt64 `gorm:"default:1" valid:"0,7"`
+	BanEnabled           bool
+	BanCmdRoles          pq.Int64Array `gorm:"type:bigint[]" valid:"role,true"`
+	BanReasonOptional    bool
+	BanMessage           string        `valid:"template,5000"`
+	DefaultBanDeleteDays sql.NullInt64 `gorm:"default:1" valid:"0,7"`
 
 	// Mute/unmute
 	MuteEnabled             bool
@@ -42,7 +42,7 @@ type Config struct {
 	MuteIgnoreChannels      pq.Int64Array `gorm:"type:bigint[]" valid:"channel,true"`
 	MuteMessage             string        `valid:"template,5000"`
 	UnmuteMessage           string        `valid:"template,5000"`
-	DefaultMuteDuration     sql.NullInt64 `gorm:"default:10"`
+	DefaultMuteDuration     sql.NullInt64 `gorm:"default:10" valid:"0,"`
 
 	// Warn
 	WarnCommandsEnabled    bool

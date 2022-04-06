@@ -12,12 +12,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/jonas747/yagpdb/analytics"
-	"github.com/jonas747/yagpdb/common"
-	"github.com/jonas747/yagpdb/common/cplogs"
-	"github.com/jonas747/yagpdb/common/scheduledevents2"
-	"github.com/jonas747/yagpdb/verification/models"
-	"github.com/jonas747/yagpdb/web"
+	"github.com/botlabs-gg/yagpdb/analytics"
+	"github.com/botlabs-gg/yagpdb/common"
+	"github.com/botlabs-gg/yagpdb/common/cplogs"
+	"github.com/botlabs-gg/yagpdb/common/scheduledevents2"
+	"github.com/botlabs-gg/yagpdb/verification/models"
+	"github.com/botlabs-gg/yagpdb/web"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday"
 	"github.com/volatiletech/null"
@@ -35,8 +35,8 @@ type FormData struct {
 	Enabled             bool
 	VerifiedRole        int64  `valid:"role"`
 	PageContent         string `valid:",10000"`
-	KickUnverifiedAfter int
-	WarnUnverifiedAfter int
+	KickUnverifiedAfter int    `valid:"0,"`
+	WarnUnverifiedAfter int    `valid:"0,"`
 	WarnMessage         string `valid:"template,10000"`
 	DMMessage           string `valid:"template,10000"`
 	LogChannel          int64  `valid:"channel,true"`

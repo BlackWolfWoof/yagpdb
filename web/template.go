@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/botlabs-gg/yagpdb/common"
+	"github.com/botlabs-gg/yagpdb/common/templates"
 	"github.com/jonas747/discordgo/v2"
 	"github.com/jonas747/dstate/v4"
-	"github.com/jonas747/yagpdb/common"
-	"github.com/jonas747/yagpdb/common/templates"
 )
 
 func prettyTime(t time.Time) string {
@@ -138,7 +138,7 @@ OUTER:
 			}
 		}
 
-		builder.WriteString(fmt.Sprintf(`<option value="0" selected>Deleted role: %d</option>\n`, sr))
+		builder.WriteString(fmt.Sprintf(`<option value="%[1]d" selected>Deleted role: %[1]d</option>\n`, sr))
 	}
 
 	for k, role := range roles {

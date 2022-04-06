@@ -13,28 +13,28 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/botlabs-gg/yagpdb/analytics"
+	"github.com/botlabs-gg/yagpdb/premium"
 	"github.com/jonas747/template"
-	"github.com/jonas747/yagpdb/analytics"
-	"github.com/jonas747/yagpdb/premium"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 
 	"emperror.dev/errors"
+	"github.com/botlabs-gg/yagpdb/bot"
+	"github.com/botlabs-gg/yagpdb/bot/eventsystem"
+	"github.com/botlabs-gg/yagpdb/commands"
+	"github.com/botlabs-gg/yagpdb/common"
+	"github.com/botlabs-gg/yagpdb/common/keylock"
+	"github.com/botlabs-gg/yagpdb/common/multiratelimit"
+	"github.com/botlabs-gg/yagpdb/common/pubsub"
+	"github.com/botlabs-gg/yagpdb/common/scheduledevents2"
+	schEventsModels "github.com/botlabs-gg/yagpdb/common/scheduledevents2/models"
+	"github.com/botlabs-gg/yagpdb/common/templates"
+	"github.com/botlabs-gg/yagpdb/customcommands/models"
+	"github.com/botlabs-gg/yagpdb/stdcommands/util"
 	"github.com/jonas747/dcmd/v4"
 	"github.com/jonas747/discordgo/v2"
 	"github.com/jonas747/dstate/v4"
-	"github.com/jonas747/yagpdb/bot"
-	"github.com/jonas747/yagpdb/bot/eventsystem"
-	"github.com/jonas747/yagpdb/commands"
-	"github.com/jonas747/yagpdb/common"
-	"github.com/jonas747/yagpdb/common/keylock"
-	"github.com/jonas747/yagpdb/common/multiratelimit"
-	"github.com/jonas747/yagpdb/common/pubsub"
-	"github.com/jonas747/yagpdb/common/scheduledevents2"
-	schEventsModels "github.com/jonas747/yagpdb/common/scheduledevents2/models"
-	"github.com/jonas747/yagpdb/common/templates"
-	"github.com/jonas747/yagpdb/customcommands/models"
-	"github.com/jonas747/yagpdb/stdcommands/util"
 	"github.com/sirupsen/logrus"
 	"github.com/vmihailenco/msgpack"
 	"github.com/volatiletech/null"
@@ -695,6 +695,7 @@ func ExecuteCustomCommand(cmd *models.CustomCommand, tmplCtx *templates.Context)
 	tmplCtx.Name = "CC #" + strconv.Itoa(int(cmd.LocalID))
 	tmplCtx.Data["CCID"] = cmd.LocalID
 	tmplCtx.Data["CCRunCount"] = cmd.RunCount + 1
+	tmplCtx.Data["CCTrigger"] = cmd.TextTrigger
 
 	csCop := tmplCtx.CurrentFrame.CS
 	f := logger.WithFields(logrus.Fields{
@@ -704,7 +705,7 @@ func ExecuteCustomCommand(cmd *models.CustomCommand, tmplCtx *templates.Context)
 		"channel_name": csCop.Name,
 	})
 
-	// do not allow concurrect executions of the same custom command, to prevent most common kinds of abuse
+	// do not allow concurrent executions of the same custom command, to prevent most common kinds of abuse
 	lockKey := CCExecKey{
 		GuildID: cmd.GuildID,
 		CCID:    cmd.LocalID,
@@ -730,7 +731,7 @@ func ExecuteCustomCommand(cmd *models.CustomCommand, tmplCtx *templates.Context)
 	out, err := tmplCtx.Execute(chanMsg)
 
 	if utf8.RuneCountInString(out) > 2000 {
-		out = "Custom command response was longer than 2k (contact an admin on the server...)"
+		out = "Custom command (#" + discordgo.StrID(cmd.LocalID) + ") response was longer than 2k (contact an admin on the server...)"
 	}
 
 	go updatePostCommandRan(cmd, err)

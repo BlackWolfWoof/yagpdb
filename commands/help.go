@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/botlabs-gg/yagpdb/bot/paginatedmessages"
+	"github.com/botlabs-gg/yagpdb/common"
 	"github.com/jonas747/dcmd/v4"
 	"github.com/jonas747/discordgo/v2"
-	"github.com/jonas747/yagpdb/bot/paginatedmessages"
-	"github.com/jonas747/yagpdb/common"
 )
 
 var cmdHelp = &YAGCommand{
@@ -91,7 +91,7 @@ For more in depth help and information you should visit https://docs.yagpdb.xyz/
 		return embed, nil
 	})
 	if err != nil {
-		return "Something went wrong, make sure you don't have the bot blocked!", err
+		return "Something went wrong, make sure you don't have the bot blocked or your DMs closed!", err
 
 	}
 

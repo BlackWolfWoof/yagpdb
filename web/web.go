@@ -11,13 +11,13 @@ import (
 	"time"
 
 	"github.com/NYTimes/gziphandler"
+	"github.com/botlabs-gg/yagpdb/common"
+	"github.com/botlabs-gg/yagpdb/common/config"
+	"github.com/botlabs-gg/yagpdb/common/patreon"
+	yagtmpl "github.com/botlabs-gg/yagpdb/common/templates"
+	"github.com/botlabs-gg/yagpdb/frontend"
+	"github.com/botlabs-gg/yagpdb/web/discordblog"
 	"github.com/jonas747/discordgo/v2"
-	"github.com/jonas747/yagpdb/common"
-	"github.com/jonas747/yagpdb/common/config"
-	"github.com/jonas747/yagpdb/common/patreon"
-	yagtmpl "github.com/jonas747/yagpdb/common/templates"
-	"github.com/jonas747/yagpdb/frontend"
-	"github.com/jonas747/yagpdb/web/discordblog"
 	"github.com/natefinch/lumberjack"
 	"goji.io"
 	"goji.io/pat"
@@ -33,10 +33,10 @@ var (
 	ListenAddressHTTPS = ":5001"
 
 	// Muxers
-	RootMux           *goji.Mux
-	CPMux             *goji.Mux
-	ServerPublicMux   *goji.Mux
-	ServerPubliAPIMux *goji.Mux
+	RootMux            *goji.Mux
+	CPMux              *goji.Mux
+	ServerPublicMux    *goji.Mux
+	ServerPublicAPIMux *goji.Mux
 
 	properAddresses bool
 
@@ -277,16 +277,16 @@ func setupRoutes() *goji.Mux {
 	ServerPublicMux = serverPublicMux
 
 	// same as above but for API stuff
-	ServerPubliAPIMux = goji.SubMux()
-	ServerPubliAPIMux.Use(ActiveServerMW)
-	ServerPubliAPIMux.Use(RequireActiveServer)
-	ServerPubliAPIMux.Use(LoadCoreConfigMiddleware)
-	ServerPubliAPIMux.Use(SetGuildMemberMiddleware)
+	ServerPublicAPIMux = goji.SubMux()
+	ServerPublicAPIMux.Use(ActiveServerMW)
+	ServerPublicAPIMux.Use(RequireActiveServer)
+	ServerPublicAPIMux.Use(LoadCoreConfigMiddleware)
+	ServerPublicAPIMux.Use(SetGuildMemberMiddleware)
 
-	RootMux.Handle(pat.Get("/api/:server"), ServerPubliAPIMux)
-	RootMux.Handle(pat.Get("/api/:server/*"), ServerPubliAPIMux)
+	RootMux.Handle(pat.Get("/api/:server"), ServerPublicAPIMux)
+	RootMux.Handle(pat.Get("/api/:server/*"), ServerPublicAPIMux)
 
-	ServerPubliAPIMux.Handle(pat.Get("/channelperms/:channel"), RequireActiveServer(APIHandler(HandleChanenlPermissions)))
+	ServerPublicAPIMux.Handle(pat.Get("/channelperms/:channel"), RequireActiveServer(APIHandler(HandleChanenlPermissions)))
 
 	// Server selection has its own handler
 	RootMux.Handle(pat.Get("/manage"), SelectServerHomePageHandler)

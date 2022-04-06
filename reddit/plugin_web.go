@@ -10,12 +10,12 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/botlabs-gg/yagpdb/common"
+	"github.com/botlabs-gg/yagpdb/common/cplogs"
+	"github.com/botlabs-gg/yagpdb/common/pubsub"
+	"github.com/botlabs-gg/yagpdb/reddit/models"
+	"github.com/botlabs-gg/yagpdb/web"
 	"github.com/jonas747/discordgo/v2"
-	"github.com/jonas747/yagpdb/common"
-	"github.com/jonas747/yagpdb/common/cplogs"
-	"github.com/jonas747/yagpdb/common/pubsub"
-	"github.com/jonas747/yagpdb/reddit/models"
-	"github.com/jonas747/yagpdb/web"
 	"github.com/volatiletech/sqlboiler/boil"
 	"github.com/volatiletech/sqlboiler/queries/qm"
 	"goji.io"
@@ -38,7 +38,7 @@ type CreateForm struct {
 	ID         int64  `schema:"id"`
 	UseEmbeds  bool   `schema:"use_embeds"`
 	NSFWMode   int    `schema:"nsfw_filter"`
-	MinUpvotes int    `schema:"min_upvotes"`
+	MinUpvotes int    `schema:"min_upvotes" valid:"0,"`
 }
 
 type UpdateForm struct {
@@ -46,7 +46,7 @@ type UpdateForm struct {
 	ID         int64 `schema:"id"`
 	UseEmbeds  bool  `schema:"use_embeds"`
 	NSFWMode   int   `schema:"nsfw_filter"`
-	MinUpvotes int   `schema:"min_upvotes"`
+	MinUpvotes int   `schema:"min_upvotes" valid:"0,"`
 }
 
 var (
