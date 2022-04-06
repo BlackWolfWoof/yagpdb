@@ -26,7 +26,7 @@ require (
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jonas747/cardsagainstdiscord/v2 v2.0.0
 	github.com/jonas747/dca/v2 v2.0.0
-	github.com/jonas747/dcmd/v4 v4.0.3
+	github.com/jonas747/dcmd/v4 v4.0.4
 	github.com/jonas747/dice v0.0.0-20170619144252-7735f6ee7b69
 	github.com/jonas747/discordgo/v2 v2.0.6
 	github.com/jonas747/dshardorchestrator/v3 v3.0.0
@@ -34,7 +34,7 @@ require (
 	github.com/jonas747/go-reddit v0.1.2
 	github.com/jonas747/go-twitter v0.0.0-20200706234916-1d17060b92bc
 	github.com/jonas747/jdshardmanager/v2 v2.0.0
-	github.com/jonas747/template v1.1.2
+	github.com/jonas747/template v1.1.3
 	github.com/jonas747/when v0.0.3-0.20201118193825-7feeddcd993f
 	github.com/justinian/dice v0.0.0-20170728002755-6a18b51d929c // indirect
 	github.com/karlseguin/ccache v2.0.3+incompatible
